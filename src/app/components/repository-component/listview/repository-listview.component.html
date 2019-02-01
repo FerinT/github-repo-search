@@ -1,0 +1,45 @@
+<!-- search section -->
+<div class="container">
+  <form id="searchForm" [formGroup]="searchForm">
+    <div class="col-md-4">
+      <label class="col-form-label">Search:</label>
+    </div>
+    <div class="col-md-8">
+      <input class="form-control" formControlName="searchValue" id="searchValue"/>
+    </div>
+    <div>
+      <button id="searchButton" class="btn btn-success" (click)="search()"> Search</button>
+    </div>
+  </form>
+</div>
+
+<div>
+  <data-table id="my-table"
+              [title]="'GitHub Repositories'"
+              [items]="repositories"
+              [itemCount]="repositories.length">
+    <data-table-column
+      [header]="'html_url'">
+
+
+      <ng-template #dataTableCell let-item="item">
+
+        <a href="{{item.html_url}}" target="_blank">{{item.html_url}}</a>
+      </ng-template>
+
+    </data-table-column>
+    <data-table-column
+      [property]="'forks'"
+      [header]="'forks'">
+    </data-table-column>
+    <data-table-column
+      [property]="'stargazers_count'"
+      [header]="'stargazers_count'">
+    </data-table-column>
+    <data-table-column
+      [property]="'open_issues_count'"
+      [header]="'open_issues_count'">
+    </data-table-column>
+
+  </data-table>
+</div>
