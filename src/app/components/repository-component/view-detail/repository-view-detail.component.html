@@ -1,1 +1,22 @@
+<div class="container-fluid">
 
+    <div class="form-group row">
+        <div class="col-md-2" >Repository name: </div>
+        <a href="{{repository.html_url}}" target="_blank">{{repository.name}}</a>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-2" >Description: </div>
+        <span class="col-md-8">{{repository.description}}</span>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-2" >Fork Count: </div>
+        <span class="col-md-8">{{repository.forks_count}}</span>
+    </div>
+
+    <div class="form-group row">
+        <div class="col-md-2" >Open issues: </div>
+        <span class="col-md-8">{{repository.open_issues_count}}</span>
+    </div>
+</div>

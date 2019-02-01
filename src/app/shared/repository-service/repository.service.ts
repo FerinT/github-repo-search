@@ -7,7 +7,7 @@ import {Observable} from 'rxjs/Observable';
 export class RepositoryService {
 
   private getManyUrl = 'https://api.github.com/search/repositories';
-  private getSingleUrl = 'https://api.github.com/repos/';
+  private getSingleUrl = 'https://api.github.com/repos';
 
   constructor(private httpClient: HttpClient) {}
 
@@ -26,7 +26,7 @@ export class RepositoryService {
   public getRepository(repoName: string, username: string) {
     const httpConfig = this.constructHttpConfig();
 
-    this.getSingleUrl = this.getManyUrl + '/' +  username + '/' + repoName;
+    this.getSingleUrl = this.getSingleUrl + '/' +  username + '/' + repoName;
 
     return this.httpClient.get<Repository>(this.getSingleUrl, {
       headers: httpConfig,
