@@ -1,0 +1,45 @@
+<!-- listview displaying the data -->
+<div *ngIf="repositoryIssues.length > 0" class="row">
+    <div class="col-md-6">
+        <h5 class="title">GitHub Repository issues</h5>
+        <div>
+            <ng-multiselect-dropdown
+                    [placeholder]="'custom placeholder'"
+                    [data]="dropDownList"
+                    [(ngModel)]="selectedItems"
+                    [settings]="dropDownListSettings"
+                    (onSelect)="filterList($event)"
+                    (onSelectAll)="filterList($event)"
+            >
+            </ng-multiselect-dropdown>
+        </div>
+    <data-table id="my-table"
+                [items]="repositoryIssues"
+                [itemCount]="repositoryIssues.length">
+        <data-table-column
+                [header]="'Issue title'"
+                [property]="'title'">
+        </data-table-column>
+        <data-table-column
+                [property]="'state'"
+                [header]="'State'">
+        </data-table-column>
+        <data-table-column
+                [property]="'locked'"
+                [header]="'Locked'">
+        </data-table-column>
+    </data-table>
+    </div>
+    <div class="col-md-6 text-center">
+        <h4 class="title"> Closed Issues vs Open Issues</h4>
+        <div class="text-center">
+            <canvas baseChart
+                    [data]="pieChartData"
+                    [labels]="pieChartLabels"
+                    [chartType]="'pie'"></canvas>
+        </div>
+    </div>
+</div>
+<div *ngIf="repositoryIssues.length  === 0">
+    <p>There were no issues returned for this repository</p>
+</div>

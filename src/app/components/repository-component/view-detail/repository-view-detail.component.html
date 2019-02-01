@@ -17,6 +17,7 @@
 
     <div class="form-group row">
         <div class="col-md-2" >Open issues: </div>
-        <span class="col-md-8">{{repository.open_issues_count}}</span>
+        <span class="col-md-8"><a routerLink="/issue/{{repository.name}}/{{repository.owner.login}}" routerLinkActive="active">{{repository.open_issues_count}}</a>
+        </span>
     </div>
 </div>

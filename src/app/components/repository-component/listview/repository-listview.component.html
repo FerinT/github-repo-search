@@ -3,14 +3,14 @@
 
     <form id="searchForm" [formGroup]="searchForm">
         <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-2">
             <label class="col-form-label">Search:</label>
         </div>
-        <div class="col-md-8">
+        <div class="col-md-10">
             <input class="form-control" formControlName="searchValue" id="searchValue"/>
         </div>
         </div>
-        <div class="float-md-right">
+        <div class="float-right" style="margin-top: 10px">
             <button id="searchButton" class="btn btn-success" (click)="search()"> Search</button>
         </div>
     </form>

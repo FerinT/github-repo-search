@@ -1,19 +1,20 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {RepositoryIssue} from './repository-issue';
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class RepositoryIssueService {
-    private url = 'https://api.github.com/repos';
 
     constructor(private httpClient: HttpClient) {}
 
-    public getRepositoryIssues(repoName: string, username: string) {
+    public getRepositoryIssues(repoName: string, username: string, state: string): Observable<HttpResponse<any>> {
+        let url = 'https://api.github.com/repos';
         const httpConfig = this.constructHttpConfig();
 
-        this.url = this.url + '/' +  username + '/' + repoName;
+        url = url + '/' +  username + '/' + repoName + '/issues?state=' + state;
 
-        return this.httpClient.get<RepositoryIssue>(this.url, {
+        return this.httpClient.get<RepositoryIssue>(url, {
             headers: httpConfig,
             observe: 'response'
         });

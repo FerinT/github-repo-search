@@ -12,7 +12,6 @@ import {ActivatedRoute} from '@angular/router';
 })
 export class RepositoryViewDetailComponent implements OnInit {
 
-
   public repository: Repository;
 
   constructor(private repositoryService: RepositoryService,
