@@ -12,12 +12,11 @@ export class RepositoryService {
   constructor(private httpClient: HttpClient) {}
 
   // change this to an actual type not any
-  public findRepositories(searchValue: string): Observable<HttpResponse<any>> {
+  public findRepositories(searchValue: string, pageNumber: number = 1): Observable<HttpResponse<any>> {
     const httpConfig = this.constructHttpConfig();
+    const url = this.getManyUrl + '?q=' + searchValue + '&page=' + pageNumber;
 
-    httpConfig.params = httpConfig.params.set('q', searchValue);
-    this.getManyUrl = this.getManyUrl + '?q=' + searchValue;
-    return this.httpClient.get<Repository>(this.getManyUrl, {
+    return this.httpClient.get<Repository>(url, {
       headers: httpConfig,
       observe: 'response'
     });
@@ -26,9 +25,9 @@ export class RepositoryService {
   public getRepository(repoName: string, username: string) {
     const httpConfig = this.constructHttpConfig();
 
-    this.getSingleUrl = this.getSingleUrl + '/' +  username + '/' + repoName;
+    const url = this.getSingleUrl + '/' +  username + '/' + repoName;
 
-    return this.httpClient.get<Repository>(this.getSingleUrl, {
+    return this.httpClient.get<Repository>(url, {
       headers: httpConfig,
       observe: 'response'
     });
@@ -37,8 +36,7 @@ export class RepositoryService {
   private constructHttpConfig(): any {
     return {
       headers: new HttpHeaders()
-        .set('Accept', 'application/vnd.github.mercy-preview+json'),
-      params: new HttpParams()
+        .set('Accept', 'application/vnd.github.mercy-preview+json')
     };
   }
 

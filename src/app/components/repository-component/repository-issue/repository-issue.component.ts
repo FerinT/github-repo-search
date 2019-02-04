@@ -2,74 +2,94 @@ import {Component, OnInit} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {RepositoryIssue} from "../../../shared/repository-issue-service/repository-issue";
 import {RepositoryIssueService} from "../../../shared/repository-issue-service/repository-issue.service";
+import {Pagination} from "../../../shared/pagination-service/pagination";
 
 @Component({
     selector: 'app-repo-issue',
     templateUrl: './repository-issue.component.html'
 })
-export class RepositoryIssueComponent implements  OnInit {
+export class RepositoryIssueComponent implements OnInit {
 
     public repositoryIssues: RepositoryIssue[];
+    public cachedRepositoryIssues: RepositoryIssue[];
+
+    // pie chart configuration
     public pieChartLabels: string[] = ['Open Issues', 'Closed Issues'];
-    public pieChartData: number[];
+    public pieChartData: number[] = [1, 1];
     public dropDownList = [];
     public dropDownListSettings = {};
+
+    private pagination: Pagination;
 
     constructor(private repositoryIssueService: RepositoryIssueService,
                 private activatedRoute: ActivatedRoute) {
         this.repositoryIssues = [];
+        this.pagination = new Pagination();
     }
 
     public ngOnInit(): void {
         const username = this.activatedRoute.snapshot.params['username'];
         const repoName = this.activatedRoute.snapshot.params['reponame'];
-        let openIssuesCount = 0;
-        let closedIssuesCount = 0;
 
-        // retrieve all open issues associated with repo
-        this.repositoryIssueService.getRepositoryIssues(repoName, username, 'open').subscribe((repo) => {
-            repo.body.forEach((val) => this.repositoryIssues.push(val));
-            openIssuesCount = repo.body.length;
-        }, (error) => {
-            console.log('An error occurred retrieving repository issues: ' + error);
-        }, () => {
-            // retrieve all closed issues associated with repo
-            this.repositoryIssueService.getRepositoryIssues(repoName, username, 'closed').subscribe((repo) => {
-                repo.body.forEach((val) => this.repositoryIssues.push(val))
-                closedIssuesCount = repo.body.length;
+        let tempRepo: RepositoryIssue[] = [];
+
+        // retrieve all issues associated with repo:
+        // recursively call method until no more records are returned
+        // this is due to paging and the paging information not being
+        // sent by GitHub with initial get
+        const retriveAllIssues = () => {
+            this.repositoryIssueService.getRepositoryIssues(repoName, username, this.pagination.page_number).subscribe((repo) => {
+                tempRepo = repo.body;
+                repo.body.forEach((val) => this.repositoryIssues.push(val));
+                this.pagination.page_number += 1;
             }, (error) => {
                 console.log('An error occurred retrieving repository issues: ' + error);
             }, () => {
-                this.pieChartData = [openIssuesCount, closedIssuesCount];
+                if (tempRepo.length > 0) {
+                    retriveAllIssues();
+                } else {
+                    const openIssues = this.repositoryIssues.filter((val) => {
+                        return val.state === 'open';
+                    });
+                    const closedIssues = this.repositoryIssues.filter((val) => {
+                        return val.state === 'closed';
+                    });
+                    this.pieChartData = [openIssues.length, closedIssues.length];
+                    this.cachedRepositoryIssues = this.repositoryIssues;
+                }
             });
-            this.pieChartData = [openIssuesCount, closedIssuesCount];
-        });
+        }
+        retriveAllIssues();
+
 
         this.dropDownList = [
-            { item_id: 1, item_text: 'Open' },
-            { item_id: 2, item_text: 'Closed' }
+            {item_id: 1, item_text: 'Open'},
+            {item_id: 2, item_text: 'Closed'}
         ];
 
         this.dropDownListSettings = {
-            singleSelection: false,
+            singleSelection: true,
             idField: 'item_id',
             textField: 'item_text',
             selectAllText: 'Select All',
             unSelectAllText: 'UnSelect All',
-            itemsShowLimit: 3,
+            itemsShowLimit: 2,
             allowSearchFilter: true
         };
+
     }
 
-    public filterList(items: any){
-        if(items.length === 1) {
-            if(items.item_text === 'Open') {
-                this.repositoryIssues = this.repositoryIssues.filter((val) => {return val.state === 'open'});
-            } else {
-                this.repositoryIssues = this.repositoryIssues.filter((val) => {return val.state === 'closed'});
-            }
-
+    public filterList(items: any) {
+        if (items.item_text === 'Open') {
+            this.repositoryIssues = this.cachedRepositoryIssues.filter((val) => {
+                return val.state === 'open'
+            });
+        } else {
+            this.repositoryIssues = this.cachedRepositoryIssues.filter((val) => {
+                return val.state === 'closed'
+            });
         }
+
     }
 }
 

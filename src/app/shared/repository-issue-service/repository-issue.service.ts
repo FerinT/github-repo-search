@@ -8,11 +8,11 @@ export class RepositoryIssueService {
 
     constructor(private httpClient: HttpClient) {}
 
-    public getRepositoryIssues(repoName: string, username: string, state: string): Observable<HttpResponse<any>> {
+    public getRepositoryIssues(repoName: string, username: string, pageNumber: number): Observable<HttpResponse<any>> {
         let url = 'https://api.github.com/repos';
         const httpConfig = this.constructHttpConfig();
 
-        url = url + '/' +  username + '/' + repoName + '/issues?state=' + state;
+        url = url + '/' +  username + '/' + repoName + '/issues?state=all&page=' + pageNumber;
 
         return this.httpClient.get<RepositoryIssue>(url, {
             headers: httpConfig,

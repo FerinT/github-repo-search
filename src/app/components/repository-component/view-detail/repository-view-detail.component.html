@@ -1,23 +1,28 @@
 <div class="container-fluid">
 
+    <div>
+        <h3>{{repository?.owner.login}}</h3>
+        <img class="rounded" style="border: 5px #E9ECEF solid; width: 200px; height:200px;" src="{{repository?.owner.avatar_url}}">
+    </div>
+    <hr>
     <div class="form-group row">
         <div class="col-md-2" >Repository name: </div>
-        <a href="{{repository.html_url}}" target="_blank">{{repository.name}}</a>
+        <span class="col-md-8"><a href="{{repository?.html_url}}" target="_blank">{{repository?.name}}</a></span>
     </div>
 
     <div class="form-group row">
         <div class="col-md-2" >Description: </div>
-        <span class="col-md-8">{{repository.description}}</span>
+        <span class="col-md-8">{{repository?.description}}</span>
     </div>
 
     <div class="form-group row">
         <div class="col-md-2" >Fork Count: </div>
-        <span class="col-md-8">{{repository.forks_count}}</span>
+        <span class="col-md-8">{{repository?.forks_count}}</span>
     </div>
 
     <div class="form-group row">
         <div class="col-md-2" >Open issues: </div>
-        <span class="col-md-8"><a routerLink="/issue/{{repository.name}}/{{repository.owner.login}}" routerLinkActive="active">{{repository.open_issues_count}}</a>
+        <span class="col-md-8"><a routerLink="/issue/{{repository?.name}}/{{repository?.owner.login}}" routerLinkActive="active">{{repository?.open_issues_count}}</a>
         </span>
     </div>
 </div>

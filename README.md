@@ -1,5 +1,28 @@
 # GithubRepoSearch
 
+## Features
+1) As a User I would like to search github in order to view the available repositories for a given search term
+
+2) As a User I would like to select a particular repository in order to view more details of the selected repository
+
+a. URL, description, forks count, stargazers count, open issues count etc
+
+3) As a User I would like to link off to the actual GitHub page where the repository is located in order to view the code in the repository
+
+4) As a User I would like to view a list of all the current issues for a repository in order to view the backlog of issues
+
+5) As a User I would like to filter the list of issues between STATE = ["Open" or "Closed"] in order to look through the filtered list
+
+6) As a User I would like to view a PIE chart that displays the breakdown of issues for the repository (open vs closed) in order to visually see how well built and maintained the repository is
+
+
+## Improvements:
+*   Test coverage
+*   Error handling
+*   Error toasts to alert the user when an error has occurred
+*   Caching to prevent unnecessary server calls when paging through the table
+*   Externalise helper methods into a class such as paging  
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
 
 ## Development server

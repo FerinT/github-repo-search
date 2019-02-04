@@ -3,14 +3,14 @@
 
     <form id="searchForm" [formGroup]="searchForm">
         <div class="row">
-        <div class="col-md-2">
-            <label class="col-form-label">Search:</label>
+            <div class="col-md-2">
+                <label class="col-form-label">Search:</label>
+            </div>
+            <div class="col-md-10">
+                <input class="form-control" formControlName="searchValue" id="searchValue"/>
+            </div>
         </div>
-        <div class="col-md-10">
-            <input class="form-control" formControlName="searchValue" id="searchValue"/>
-        </div>
-        </div>
-        <div class="float-right" style="margin-top: 10px">
+        <div class="float-right" style="margin-top: 10px; margin-bottom: 10px">
             <button id="searchButton" class="btn btn-success" (click)="search()"> Search</button>
         </div>
     </form>
@@ -18,17 +18,18 @@
 </div>
 
 <!-- listview displaying the data -->
-<div *ngIf="repositories.length > 0">
+<div *ngIf="repositories?.length > 0">
     <data-table id="my-table"
-                [title]="'GitHub Repositories'"
                 [items]="repositories"
-                [itemCount]="repositories.length">
+                [indexColumn]="false"
+                [pagination]="false"
+                [noDataMessage]="'No Data Returned'">
         <data-table-column
                 [header]="'Repository Name'">
 
 
             <ng-template #dataTableCell let-item="item">
-                <a routerLink="/view/{{item.name}}/{{item.owner.login}}" routerLinkActive="active">{{item.name}}</a>
+                <a routerLink="/view/{{item?.name}}/{{item.owner?.login}}" routerLinkActive="active">{{item?.name}}</a>
             </ng-template>
 
         </data-table-column>
@@ -44,8 +45,11 @@
                 [property]="'open_issues_count'"
                 [header]="'Open issues'">
         </data-table-column>
-
     </data-table>
+    <div class="row pull-right">
+        <button style="margin-right: 15px" class="float-right btn btn-info" (click)="previousPage()" id="previousButton">Previous page</button>
+        <button class="float-right btn btn-success" (click)="nextPage()" id="nextButton">Next page</button>
+    </div>
 </div>
 
 <router-outlet></router-outlet>
